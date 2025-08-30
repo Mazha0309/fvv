@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>名字FW指数操纵器</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+body {
+  background: #0a0e17;
+  color: #e6e9f0;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+header {
+  text-align: center;
+  padding: 25px;
+  background: rgba(22, 27, 40, 0.7);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1极简模式
+
+px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12极简模式
+
+px 35px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+ 极简模式
+
+width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(92, 107, 192, 0.2) 0%, transparent 70%);
+  z-index: -1;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 300% auto;
+  animation: shine 4s linear infinite;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+@keyframes shine {
+  to { background-position: -300% center; }
+}
+
+.subtitle {
+  color: #a0aec0;
+  font-size: 1.15rem;
+  margin-top: 8px;
+}
+
+.glass {
+  background: rgba(22, 27, 40, 0.75);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.极简模式
+
+1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -30%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(229, 115, 115, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+}
+
+input {
+  flex: 1;
+  padding: 16px 22px;
+  border-radius: 16px;
+  border: 1px solid #3a4255;
+  background: rgba(15, 20, 30, 0.7);
+  color: #f1f5f9;
+  font-size: 1.15rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+input:focus {
+  outline: none;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25),
+              inset 0 2px 6px rgba极简模式
+
+(0, 0, 0, 0.3);
+}
+
+button {
+  padding: 16px 28px;
+  border-radius: 16px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font极简模式
+
+-size: 1.05rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#goBtn {
+  background: linear-gradient(45deg, #8b5cf6, #6366f1);
+  color: white;
+}
+
+#goBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(139, 92, 246, 0.45);
+}
+
+#goBtn:active {
+  transform: translateY(0);
+}
+
+#randomBtn {
+  background: rgba(30, 40, 60, 0.7);
+  color: #cbd5e1;
+  border: 1px solid #3a4255;
+}
+
+#randomBtn:hover {
+  background: rgba(40, 50, 70, 0.8);
+  transform: translateY(-2px);
+}
+
+#resultBox {
+  display: none;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.7s ease;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.result-name {
+  color: #818cf8;
+  font-weight: bold;
+  font-size: 1.4rem;
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.4);
+}
+
+.progress-container {
+  background: rgba(15, 20, 30极简模式
+
+, 0.7);
+  border-radius: 14px;
+  height: 30px;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 极简模式
+
+6px rgba(极简模式
+
+0, 0, 0, 0.4);
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #8b极简模式
+
+5cf6, #3b82f6, #ec4899);
+  transition: width 1.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.result-message {
+  text-align: center;
+  padding: 25px;
+  background: rgba(15, 20, 30, 0.45);
+  border-radius: 16px;
+  min-height: 120px;
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  line-height: 1.7;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #ec4899);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 14px 24px;
+  border-radius: 14px;
+  background: rgba(30, 40, 60, 0.7);
+  color: #94a3b8;
+  font-size: 1rem;
+  border: 1px solid #3a4255;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.action-btn:hover {
+  background: rgba(40, 50, 70, 0.8);
+  color: #极简模式
+
+e2e8f0;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.algorithm-info summary {
+  color: #94a3b8;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  font-weight: 500;
+}
+
+.algorithm-info ul {
+  padding-left: 28px;
+  margin-top: 12px;
+}
+
+.algorithm-info li {
+  margin-bottom: 12px;
+  line-height: 1.7;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+}
+
+.history-section {
+  margin-top: 15px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.history-title {
+  font-size: 极简模式
+
+1.15rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+#clearHist {
+  padding: 10px 18px;
+  background: rgba(220, 38, 38, 0.25);
+  color: #fecaca;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(220, 38, 38, 0.4);
+}
+
+#clearHist:hover {
+  background: rgba(220, 38, 38, 0.35);
+  transform: translateY(-2px);
+}
+
+#hist {
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+#hist li {
+  background: rgba(30, 40, 60, 0.7);
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+#hist li:hover {
+  background: rgba(40, 50, 70, 0.8);
+  transform: translateX(8px);
+}
+
+.history-score {
+  color: #818cf8;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px rgba(129, 140, 248, 0.3);
+}
+
+footer {
+  text-align: center;
+  margin-top: 40px;
+  color: #64748b;
+  font-size: 0.95rem;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.result-output {
+  position: relative;
+  margin-top: 20px;
+}
+
+#resultString {
+  width: 100%;
+  padding: 16px 22px;
+  padding-right: 90px;
+  border-radius: 16px;
+  border: 1px solid #3a4255;
+  background: rgba(15, 20, 30, 0.7);
+  color: #f1f5f9;
+  font-size: 1.15rem;
+  word-wrap: break-word;
+  min-height: 80px;
+  resize: none;
+}
+
+.copy-btn-container {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.copy-btn {
+  background: rgba(30, 40, 60, 0.8);
+  color: #94a3b8;
+  border: 1px solid #3a425极简模式
+
+5;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.copy-btn:hover {
+  background: rgba(40, 50, 70, 0.9);
+  color: #e2e8f0;
+}
+
+.status-indicator {
+  text-align: center;
+  margin: 15px 0;
+  min-height: 30px;
+  color: #94a3b8;
+}
+
+.info-note {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.character-counter {
+  text-align: right;
+  font-size: 0.8rem;
+ 极简模式
+
+color: #64748b;
+  margin-top: 5px;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.pulse {
+  animation: pulse 0.6s ease;
+}
+
+@media (max-width: 600px) {
+  .input-row {
+    flex-direction: column;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  button {
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .container {
+    padding: 0 15px;
+  }
+  
+  #resultString {
+    padding: 16px;
+    min-height: 100px;
+    padding-right: 16px;
+  }
+  
+  .copy-btn-container {
+    position: static;
+    margin-top: 10px;
+    align-self: flex-end;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>名字<span style="color:#818cf8">FW指数</span>操纵器</h1>
+      <p class="subtitle">通过隐形字符操纵指数 · 纯属娱乐</p>
+    </header>
+    
+    <main class="glass">
+      <div class="input-group">
+        <div class="input-row">
+          <input type="text" id="nameInput" placeholder="请输入原始名称">
+          <input type="number" id="targetInput" min="0" max="100" placeholder="目标指数 (0-100)">
+        </div>
+        
+        <button id="goBtn">开始操纵指数</button>
+        <button id="randomBtn">随机生成</button>
+      </div>
+      
+      <div class="status-indicator" id="status">输入名称和目标指数开始</div>
+      
+      <section id="resultBox">
+        <div class="result-header">
+          <h2>操纵结果：<span id="dispName" class="result-name"></span></h2>
+          <p class="subtitle">看起来和原始名称一样，但FW指数已被改变</p>
+        </div>
+        
+        <div class="progress-container">
+          <div id="progressBar" class="progress-bar" style="width:0%"></div>
+          <div id="progressText" class="progress-text">0%</div>
+        </div>
+        
+        <div class="result-output">
+          <textarea id="resultString" readonly></textarea>
+          <button class="copy-btn" id="copyBtn">复制结果</button>
+        </div>
+        
+        <div class="character-counter">
+          实际字符长度: <span id="charCount">0</span> | 
+          隐形字符长度: <span id="hiddenCount">0</span>
+        </div>
+        
+        <div class="info-note">
+          提示：生成的名称在视觉上与原始名称相同，但包含特殊隐形字符<br>
+          复制到其他应用后仍能保持相同的FW指数
+        </div>
+        
+        <div class="action-buttons">
+          <button id="analyzeBtn" class="action-btn">验证结果</button>
+          <button id="shareBtn" class="action-btn">分享结果</button>
+        </div>
+        
+        <div id="explain" style="display:none; margin-top:25px; padding:20px; background:rgba(15,20,30,0.55); border-radius:16px; border:1px solid rgba(255,255,255,0.1);">
+          <!-- 详细分析内容将通过JS动态添加 -->
+        </div>
+      </section>
+      
+      <details class="algorithm-info">
+        <summary>算法说明（点击展开）</summary>
+        <ul>
+          <li>使用FNV-1a哈希算法计算名字的唯一哈希值</li>
+          <li>通过添加零宽字符（U+200B, U+200C, U+200D, U+FEFF）改变哈希值</li>
+          <li>调整哈希值使其映射到目标FW指数（0-100）</li>
+          <li>生成的名称视觉上与原名称一致</li>
+          <li>相同的输入和目标指数总是得到相同的结果</li>
+        </ul>
+      </details>
+      
+      <section class="history-section">
+        <div class="history-header">
+          <h3 class="history-title">历史操作记录</h3>
+          <button id="clearHist">清空记录</button>
+        </div>
+        <ul id="hist">
+          <!-- 历史记录将通过JS动态添加 -->
+        </ul>
+      </section>
+    </main>
+    
+    <footer>© Mazha0309 2025-至今 · 本工具仅供娱乐 · 请勿对号入座</footer>
+    <footer>
+      免责声明：本工具使用透明字符修改名字FW指数，所有结果均基于算法生成，不具备任何科学依据和实际意义。
+      生成的名称包含特殊Unicode字符，某些系统可能无法正确处理。使用者一旦使用本工具，即视为已阅读并同意本免责声明。
+    </footer>
+  </div>
+
+  <script>
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+      // 获取页面元素
+      const nameInput = document.getElementById('nameInput');
+      const targetInput = document.getElementById('targetInput');
+      const goBtn = document.getElementById('goBtn');
+      const randomBtn = document.getElementById('randomBtn');
+      const resultBox = document.getElementById('resultBox');
+      const dispName = document.getElementById('dispName');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const resultString = document.getElementById('resultString');
+      const copyBtn = document.getElementById('copyBtn');
+      const status = document.getElementById('status');
+      const charCount = document.getElementById('charCount');
+      const hiddenCount = document.getElementById('hiddenCount');
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const shareBtn = document.getElementById('shareBtn');
+      const hist = document.getElementById('hist');
+      const clearHist = document.getElementById('clearHist');
+      const explain = document.getElementById('explain');
+      
+      // 零宽字符定义
+      const zeroWidthChars = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+      
+      // FNV-1a哈希算法（与文档1相同）
+      function fnv1aHash(str) {
+        let hash = 0x811c9dc5;
+        for (let i = 0; i < str.length; i++) {
+          hash ^= str.charCodeAt(i);
+          hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+        }
+        return hash >>> 0;
+      }
+      
+      // 计算FW指数 - 使用哈希算法（与文档1相同）
+      function calculateFWScore(name) {
+        if (!name.trim()) return 0;
+        const hash = fnv1aHash(name);
+        const score = hash % 101;
+        return score;
+      }
+      
+      // 生成零宽字符串表示
+      function generateZWString(num, chars) {
+        if (num === 0) return '';
+        let result = '';
+        num--;
+        while (num >= 0) {
+          const remainder = num % chars.length;
+          result = chars[remainder] + result;
+          num = Math.floor(num / chars.length) - 1;
+        }
+        return result;
+      }
+      
+      // 操纵指数函数
+      function manipulateScore(baseName, targetScore) {
+        const baseScore = calculateFWScore(baseName);
+        
+        // 如果原始分数就是目标分数
+        if (baseScore === targetScore) {
+          return {
+            result: baseName,
+            iterations: 0,
+            hiddenChars: 0
+          };
+        }
+        
+        let iteration = 0;
+        const maxIterations = 50000;
+        
+        // 尝试不同的零宽字符组合
+        while (iteration < maxIterations) {
+          const suffix = generateZWString(iteration, zeroWidthChars);
+          const testName = baseName + suffix;
+          const score = calculateFWScore(testName);
+          
+          if (score === targetScore) {
+            return {
+              result: testName,
+              iterations: iteration,
+              hiddenChars: suffix.length
+            };
+          }
+          
+          iteration++;
+        }
+        
+        return null; // 未找到匹配结果
+      }
+      
+      // 显示操纵结果
+      function showResult(baseName, targetScore, result, iterations, hiddenChars) {
+        dispName.textContent = baseName;
+        resultString.value = result;
+        charCount.textContent = baseName.length;
+        hiddenCount.textContent = hiddenChars;
+        
+        // 动画效果显示结果
+        resultBox.style.display = 'block';
+        setTimeout(() => {
+          resultBox.classList.add('fade-in');
+        }, 10);
+        
+        // 进度条动画
+        let current = 0;
+        const interval = setInterval(() => {
+          if (current >= targetScore) {
+            clearInterval(interval);
+            progressText.classList.add('pulse');
+            return;
+          }
+          current++;
+          progressBar.style.width = current + '%';
+          progressText.textContent = current + '%';
+        }, 20);
+      }
+      
+      // 开始操纵
+      function startManipulation() {
+        const baseName = nameInput.value.trim();
+        const targetScore = parseInt(targetInput.value.trim());
+        
+        if (!baseName) {
+          status.textContent = "请输入原始名称";
+          nameInput.placeholder = "请输入名称...";
+          nameInput.classList.add('pulse');
+          setTimeout(() => {
+            nameInput.classList.remove('pulse');
+          }, 500);
+          return;
+        }
+        
+        if (isNaN(targetScore) || targetScore < 0 || targetScore > 100) {
+          status.textContent = "请输入0-100之间的目标指数";
+          targetInput.classList.add('pulse');
+          setTimeout(() => {
+            targetInput.classList.remove('pulse');
+          }, 500);
+          return;
+        }
+        
+        status.textContent = "正在生成...";
+        
+        // 使用setTimeout避免UI阻塞
+        setTimeout(() => {
+          const result = manipulateScore(baseName, targetScore);
+          
+          if (result === null) {
+            status.textContent = "未找到匹配结果，请尝试其他目标指数";
+            return;
+          }
+          
+          showResult(baseName, targetScore, result.result, result.iterations, result.hiddenChars);
+          status.textContent = `成功！经过${result.iterations}次尝试，添加了${result.hiddenChars}个隐形字符`;
+          
+          // 保存到历史记录
+          saveToHistory(baseName, result.result, targetScore, result.hiddenChars);
+        }, 100);
+      }
+      
+      // 保存历史记录
+      function saveToHistory(baseName, resultName, targetScore, hiddenChars) {
+        let history = JSON.parse(localStorage.getItem('fwManipulateHistory') || '[]');
+        
+        history.push({
+          baseName,
+          resultName,
+          targetScore,
+          hiddenChars,
+          timestamp: new Date().toISOString()
+        });
+        
+        // 只保留最近10条记录
+        if (history.length > 10) {
+          history = history.slice(history.length - 10);
+        }
+        
+        localStorage.setItem('fwManipulateHistory', JSON.stringify(history));
+        renderHistory();
+      }
+      
+      // 渲染历史记录
+      function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('fwManipulateHistory') || '[]');
+        hist.innerHTML = '';
+        
+        if (history.length === 0) {
+          hist.innerHTML = '<li style="text-align:center; padding:20px; color:#94a3b8;">暂无历史记录</li>';
+          return;
+        }
+        
+        history.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span>${item.baseName} → ${item.targetScore}%</span>
+            <span class="history-score">${item.hiddenChars}个隐形字符</span>
+          `;
+          
+          li.addEventListener('click', () => {
+            nameInput.value = item.baseName;
+            targetInput.value = item.targetScore;
+            resultString.value = item.resultName;
+            resultBox.style.display = 'block';
+            progressBar.style.width = item.targetScore + '%';
+            progressText.textContent = item.targetScore + '%';
+            charCount.textContent = item.baseName.length;
+            hiddenCount.textContent = item.hiddenChars;
+            dispName.textContent = item.baseName;
+            status.textContent = `已加载历史记录 ${index + 1}`;
+          });
+          
+          hist.appendChild(li);
+        });
+      }
+      
+      // 清除历史记录
+      clearHist.addEventListener('click', () => {
+        localStorage.removeItem('fwManipulateHistory');
+        renderHistory();
+      });
+      
+      // 复制结果
+      copyBtn.addEventListener('click', () => {
+        const text = resultString.value;
+        
+        // 创建临时textarea复制内容
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        // 显示反馈
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = '已复制!';
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+        }, 2000);
+      });
+      
+      // 分析结果（验证）
+      analyzeBtn.addEventListener('click', () => {
+        const name = resultString.value;
+        const score = calculateFWScore(name);
+        
+        explain.style.display = 'block';
+        explain.innerHTML = `
+          <h3 style="margin-bottom:15px; color:#94a3b8; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.1);">验证结果：</h3>
+          <ul style="list-style-type:none; padding-left:0;">
+            <li style="margin-bottom:12px; padding:12px 15px; background:rgba(15,20,30,0.4); border-radius:12px;">
+              <strong>原始名称：</strong> ${nameInput.value}
+            </li>
+            <li style="margin-bottom:12px; padding:12px 15px; background:rgba(15,20,30,0.4); border-radius:12px;">
+              <strong>目标指数：</strong> ${targetInput.value}%
+            </li>
+            <li style="margin-bottom:12px; padding:12px 15px; background:rgba(15,20,30,0.4); border-radius:12px;">
+              <strong>实际指数：</strong> <span style="color:#818cf8; font-weight:bold;">${score}%</span>
+            </li>
+            <li style="margin-bottom:12px; padding:12px 15px; background:rgba(15,20,30,0.4); border-radius:12px;">
+              <strong>验证状态：</strong> ${score === parseInt(targetInput.value) ? 
+                '<span style="color:#10b981;">成功匹配目标指数</span>' : 
+                '<span style="color:#ef4444;">未匹配目标指数</span>'}
+            </li>
+          </ul>
+        `;
+      });
+      
+      // 分享结果
+      shareBtn.addEventListener('click', () => {
+        const shareData = {
+          title: '名字FW指数操纵结果',
+          text: `我成功将"${nameInput.value}"的FW指数操纵为${targetInput.value}%！`,
+        };
+        
+        if (navigator.share) {
+          navigator.share(shareData)
+            .then(() => console.log('分享成功'))
+            .catch(err => console.log('分享失败:', err));
+        } else {
+          const originalText = shareBtn.textContent;
+          shareBtn.textContent = '请使用分享功能';
+          setTimeout(() => {
+            shareBtn.textContent = originalText;
+          }, 2000);
+        }
+      });
+      
+      // 随机生成
+      randomBtn.addEventListener('click', () => {
+        const names = [
+          "张三", "李四", "王五", "赵六", "钱七", 
+          "孙八", "周九", "吴十", "郑十一", "王十二",
+          "小明", "小红", "小刚", "小丽", "小华",
+          "程序员", "设计师", "产品经理", "运营专员", "测试工程师"
+        ];
+        
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        const randomScore = Math.floor(Math.random() * 101);
+        
+        nameInput.value = randomName;
+        targetInput.value = randomScore;
+        
+        status.textContent = `已生成随机名称和目标指数: ${randomName} → ${randomScore}%`;
+      });
+      
+      // 分析按钮事件
+      goBtn.addEventListener('click', startManipulation);
+      
+      // 回车键事件
+      nameInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') startManipulation();
+      });
+      
+      targetInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') startManipulation();
+      });
+      
+      // 初始渲染历史记录
+      renderHistory();
+    });
+  </script>
+</body>
+</html>
